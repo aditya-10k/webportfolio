@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -27,12 +14,132 @@
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>webportfolio2</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Josefin Sans Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Josefin Sans', sans-serif;
+      background: black;
+    }
+
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    #overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .loading-text {
+      font-size: 28px;
+      color: white;
+      z-index: 1;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar-container {
+      width: 80%;
+      max-width: 400px;
+      height: 10px;
+      background: #444;
+      border-radius: 5px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: white;
+      transition: width 0.3s ease;
+    }
+
+    .percentage {
+      margin-top: 12px;
+      font-size: 18px;
+      color: white;
+      z-index: 1;
+    }
+  </style>
 </head>
+
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <div id="splash-screen">
+    <video autoplay muted loop id="bg-video">
+      <source src="assets/323-135992580.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div id="overlay"></div>
+
+    <div class="loading-text">Loading...</div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="percentage" id="percentage">0%</div>
+  </div>
+
+  <script>
+  let progress = 0;
+  const progressBar = document.getElementById("progress-bar");
+  const percentageText = document.getElementById("percentage");
+
+  const fakeLoading = setInterval(() => {
+    if (progress >= 97) {
+      clearInterval(fakeLoading);
+      return;
+    }
+    progress += Math.floor(Math.random() * 3) + 1;
+    if (progress > 97) progress = 97;
+    progressBar.style.width = progress + "%";
+    percentageText.innerText = progress + "%";
+  }, 60);
+
+  window.addEventListener('load', () => {
+    // On actual Flutter load, force it to 100%
+    progressBar.style.width = "100%";
+    percentageText.innerText = "100%";
+
+    setTimeout(() => {
+      const splash = document.getElementById("splash-screen");
+      if (splash) splash.remove();
+    }, 300); // Optional fade-out delay
+  });
+</script>
+
+
+  <script src="flutter_bootstrap.js" defer></script>
 </body>
 </html>
