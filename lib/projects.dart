@@ -23,6 +23,12 @@ class _ProjectsState extends State<Projects> {
   // Project list
   final List<Map<String, String>> projects = [
     {
+      'title': '12th Man',
+      'siteUrl': 'https://crickanal.web.app/',
+      'githubrepo': '',
+      'icon': 'assets/12thman.png'
+    },
+    {
       'title': 'Exam Central',
       'siteUrl': 'https://examcentral-741f9.web.app/',
       'githubrepo': 'https://github.com/karaniheta/RUBRIX25_44_TechTonic.git',
@@ -54,7 +60,6 @@ class _ProjectsState extends State<Projects> {
       'icon': 'assets/Diamondrock logo.png'
     },
   ];
-
   void _updateTime() {
     setState(() {
       _currentTime = DateFormat('hh:mm a').format(DateTime.now());
